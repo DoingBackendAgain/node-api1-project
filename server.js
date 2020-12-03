@@ -99,25 +99,26 @@ server.delete("/users/:id", (req, res, next)=> {
     }
 })
 
-server.put("/users/:id", (res, req, next)=> {
+server.put("/users/:id", (req, res, next)=> {
     try{
+        
         const id = req.params.id
         const user = db.getUserById(id)
 
         if (user){
-              const updateUser = db.updateUser(user.id, {
+              const updateUser = db.updateUser(id, {
                   name: req.body.name,
                   bio: req.body.bio
               }) 
 
             return res.status(200).json(updateUser)
         }
-        if (!req.body.name || !req.body.bio) {
+        else if (!req.body.name || !req.body.bio) {
             return res.status(404).json({
                 message: "Please provide name and bio"
             })
         }
-        if(!user) {
+         else if(!user) {
             res.status(404).json({
                 message: "The user specified doesn not exist"
             })
